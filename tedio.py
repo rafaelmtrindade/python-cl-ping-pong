@@ -1,5 +1,7 @@
 from time import sleep
 
 while True:
-    print('Passou um segundo...')
-    sleep(1)
+    print('ping!')
+    sleep(.5)
+    print('pong!')
+    sleep(.5)
