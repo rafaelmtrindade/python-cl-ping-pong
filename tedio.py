@@ -1,61 +1,49 @@
 from random import randint
-from time import sleep
-
-player1 = {
-    "name": 'Jogador 1',
-    "active": True,
-    "base_lose": 30,
-    "lose_mod": 0
-}
-player2 = {
-    "name": 'Jogador 2',
-    "active": False,
-    "base_lose": 30,
-    "lose_mod": 0
-}
+from player import Player
 
 
 def change_active():
-    if player1.get('active'):
-        player2['active'] = True
-        player1['active'] = False
-    else:
-        player1['active'] = True
-        player2['active'] = False
+    player1.toggle_active()
+    player2.toggle_active()
 
 
-def eval_round(active_player, other_player):
-    lose_threshold = active_player.get(
-        'base_lose') - active_player.get('lose_mod')
+def eval_round(active_player: Player, other_player: Player):
+    lose_threshold = 100 - active_player.skill + active_player.lose_mod
     roll = randint(1, 100)
-    active_player['lose_mod'] = 0
+    active_player.reset_penalty()
     change_active()
 
-    sleep(.5)
-
     if roll <= lose_threshold:
-        print(f'{active_player.get("name")} não conseguiu rebater!')
+        active_player.miss()
         return active_player
-    elif lose_threshold < roll < 100:
-        print(f'{active_player.get("name")} rebateu!')
+    elif lose_threshold < roll < 100 - active_player.crit_mod:
+        active_player.hit()
         return other_player
     else:
-        print(f'{active_player.get("name")} rebateu a bola com muita força!')
-        other_player['lose_mod'] = 10
+        active_player.crit_hit()
+        other_player.apply_penalty(active_player.strength)
         return other_player
 
 
-game_not_lost = True
+player1 = Player('left', 'Jorge', 85)
+player2 = Player('right', 'Mateus', 80)
+
+
 ap = player1
 op = player2
+ap.toggle_active()
 
+round_not_lost = True
+print(f'{ap.name} sacou!')
 
-print(f'{ap.get("name")} sacou!')
-while game_not_lost:
-    ap = player1 if player1.get('active') else player2
+print('\n'*11)
+
+ap.hit()
+while round_not_lost:
+    ap = player1 if player1.active else player2
     op = player1 if ap == player2 else player2
 
     if eval_round(op, ap) == op:
-        game_not_lost = False
-
-print(f'Fim de jogo! {ap.get("name")} ganhou!')
+        round_not_lost = False
+else:
+    print(f'{ap.name} ganhou!')
