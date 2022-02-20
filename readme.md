@@ -2,12 +2,12 @@
 
 ## Índice
 
-1. O que é
-1. Como usar
-1. Créditos
-1. Desenvolvimento
+1. <a href="#intro">O que é</a>
+1. <a href="#install">Como usar</a>
+1. <a href="#credits">Créditos</a>
+1. <a href="#dev">Desenvolvimento</a>
 
-## O que é
+## <a id="intro"></a>O que é
 
 Este pequeno projeto surgiu como uma distração em um momento de tédio e acabou se tornando algo bem divertido de fazer.
 
@@ -15,7 +15,7 @@ A ideia principal é criar um jogo de ping-pong para assistir no terminal, tendo
 
 > Disclaimer: **Eu não entendo absolutamente NADA de ping-pong** :)
 
-## Como usar
+## <a id="install"></a>Como usar
 
 **Lembrando que esse jogo é do tipo que se assiste, não do que se joga.**
 
@@ -29,11 +29,11 @@ No final do arquivo `game.py` você pode modificar alguns atributos dos jogadore
 
 Nesse jogo, um set tem 15 pontos, e você pode decidir quantos sets são necessários para que um jogador vença a partida. O valor padrão é 3.
 
-## Créditos
+## <a id="credits"></a>Créditos
 
-- A arte em caracteres ASCII utilizada foi tirada <a href="">daqui</a>.
+- A arte em caracteres ASCII utilizada foi tirada <a href="https://ascii.co.uk/art/stickman">daqui</a>.
 
-## Desenvolvimento
+## <a id="dev"></a>Desenvolvimento
 
 Eventualmente, se eu tiver tempo, algumas ideias que eu gostaria de implementar são:
 
