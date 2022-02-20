@@ -4,12 +4,19 @@ import anims
 class Player:
     player_count = 0
 
-    def __init__(self, side: str, name: str, skill: int = 70, crit_mod: int = 0):
-        self.active = False
-        self.lose_mod = 0
-        self.player_count += 1
-
-        self.name = name if name else f'Jogador {self.player_count}'
+    def __init__(self, side: str, name: str, skill: int = 70, base_crit: int = 0):
+        if side == 'left':
+            self.hit_anim = anims.left_player_hit
+            self.crit_anim = anims.left_player_crit
+            self.miss_anim = anims.left_player_miss
+            self.mark_anim = anims.left_player_mark
+            # self.fail_serve_anim = anims.left_player_fail_serve
+        else:
+            self.hit_anim = anims.right_player_hit
+            self.crit_anim = anims.right_player_crit
+            self.miss_anim = anims.right_player_miss
+            self.mark_anim = anims.right_player_mark
+            # self.fail_serve_anim = anims.right_player_fail_serve
 
         if isinstance(skill, int) and 0 < skill < 100:
             self.skill = skill
@@ -17,33 +24,53 @@ class Player:
             self.skill = 60
 
         self.strength = self.skill // 3
+        self.serve_fail_chance = (100 - self.skill) // 6
 
-        if isinstance(crit_mod, int) and 0 <= crit_mod < 40:
-            self.crit_mod = crit_mod
+        if isinstance(base_crit, int) and 0 <= base_crit < 40:
+            self.base_crit = base_crit
         else:
-            self.crit_mod = 0
+            self.base_crit = 0
 
-        if side == 'left':
-            self.hit_anim = anims.left_player_hit
-            self.crit_anim = anims.left_player_crit
-            self.miss_anim = anims.left_player_miss
-            self.mark_anim = anims.left_player_mark
-        else:
-            self.hit_anim = anims.right_player_hit
-            self.crit_anim = anims.right_player_crit
-            self.miss_anim = anims.right_player_miss
-            self.mark_anim = anims.right_player_mark
+        self.player_count += 1
 
-    def toggle_active(self):
-        self.active = not self.active
+        self.full_reset()
+        self.name = name if name else f'Jogador {self.player_count}'
 
-    def apply_penalty(self, strength_mod):
+    def buff_crit(self, amount: int):
+        self.crit_mod += amount
+
+    def reset_crit_mod(self):
+        self.crit_mod = 0
+
+    def add_penalty(self, strength_mod):
         self.lose_mod += strength_mod
 
     def reset_penalty(self):
         self.lose_mod = 0
 
+    def add_point(self):
+        if self.score == 14:
+            self.score = 0
+            self.sets += 1
+        else:
+            self.score += 1
+
+    def reset_score(self):
+        self.score = 0
+        self.sets = 0
+
+    def full_reset(self):
+        self.reset_crit_mod()
+        self.reset_penalty()
+        self.reset_score()
+
     # implement xp gain
+
+    #### ANIMATIONS ####
+    # REM: implement animation
+    def fail_serve(self):
+        self.serve_fail_anim.animate()
+
     def hit(self):
         self.hit_anim.animate()
 

@@ -16,12 +16,12 @@ def eval_round(active_player: Player, other_player: Player):
     if roll <= lose_threshold:
         active_player.miss()
         return active_player
-    elif lose_threshold < roll < 100 - active_player.crit_mod:
+    elif lose_threshold < roll < 100 - active_player.base_crit:
         active_player.hit()
         return other_player
     else:
         active_player.crit_hit()
-        other_player.apply_penalty(active_player.strength)
+        other_player.add_penalty(active_player.strength)
         return other_player
 
 
