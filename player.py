@@ -4,7 +4,30 @@ import anims
 class Player:
     player_count = 0
 
-    def __init__(self, side: str, name: str, skill: int = 70, base_crit: int = 0):
+    def __init__(self, skill: int = 70, base_crit: int = 0, name: str = '', side: str = ''):
+        if side:
+            self.set_side()
+
+        if isinstance(skill, int) and 0 < skill < 100:
+            self.skill = skill
+        else:
+            self.skill = 60
+
+        self.strength = self.skill // 3
+        self.serve_fail_chance = (100 - self.skill) // 6
+
+        if isinstance(base_crit, int) and 0 <= base_crit <= 50:
+            self.base_crit = base_crit
+        else:
+            self.base_crit = 0
+
+        self.player_count += 1
+
+        self.full_reset()
+        self.name = name if name else f'Jogador {self.player_count}'
+
+    def set_side(self, side: str = 'left'):
+        self.side = 'right' if side != 'left' else side
         if side == 'left':
             self.hit_anim = anims.left_player_hit
             self.crit_anim = anims.left_player_crit
@@ -18,25 +41,7 @@ class Player:
             self.mark_anim = anims.right_player_mark
             # self.fail_serve_anim = anims.right_player_fail_serve
 
-        if isinstance(skill, int) and 0 < skill < 100:
-            self.skill = skill
-        else:
-            self.skill = 60
-
-        self.strength = self.skill // 3
-        self.serve_fail_chance = (100 - self.skill) // 6
-
-        if isinstance(base_crit, int) and 0 <= base_crit < 40:
-            self.base_crit = base_crit
-        else:
-            self.base_crit = 0
-
-        self.player_count += 1
-
-        self.full_reset()
-        self.name = name if name else f'Jogador {self.player_count}'
-
-    def buff_crit(self, amount: int):
+    def add_crit_mod(self, amount: int):
         self.crit_mod += amount
 
     def reset_crit_mod(self):
@@ -48,7 +53,7 @@ class Player:
     def reset_penalty(self):
         self.lose_mod = 0
 
-    def add_point(self):
+    def add_score(self):
         if self.score == 14:
             self.score = 0
             self.sets += 1
@@ -64,12 +69,22 @@ class Player:
         self.reset_penalty()
         self.reset_score()
 
-    # implement xp gain
+    def mod_reset(self):
+        self.reset_crit_mod()
+        self.reset_penalty()
+
+    # TODO: Sistema de XP
+    # Level up -> ganha pontos pra colocar em:
+    #   b_crit, strength ou skill
+    # TODO: Criar e permitir adicionar bonus de critico base para:
+    #   rebater
+    #   saques
 
     #### ANIMATIONS ####
-    # REM: implement animation
+    # TODO: criar animação
     def fail_serve(self):
-        self.serve_fail_anim.animate()
+        pass
+        # self.serve_fail_anim.animate()
 
     def hit(self):
         self.hit_anim.animate()
@@ -85,7 +100,6 @@ class Player:
 
 
 # TEST ANIMS
-# player1.print_stats()
 if __name__ == '__main__':
     player1 = Player('', -1, 'left')
     player2 = Player('', -1, 'right')
@@ -99,17 +113,3 @@ if __name__ == '__main__':
     # player1.animate_miss()
     player1.crit_hit()
     player2.miss()
-    # understanding cursor navigation
-    # print('line 1')
-    # print('line 2')
-    # print('line 3')
-    # print('line 4')
-    # print('line 5', end='')
-
-    # sleep(2)
-    # print("\033[F\033[Fnew line 3")
-
-    # testing anim length
-    # print(f'{player1_hit[0]}', end=back_to_start)
-    # sleep(2)
-    # print('got here', end='\n\n\n\n\n\n\n')
