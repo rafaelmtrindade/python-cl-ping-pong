@@ -1,6 +1,7 @@
 from time import sleep
-from player import Player
 from random import randint
+from colorama import init
+from player import Player
 
 
 class Game:
@@ -131,6 +132,8 @@ class Game:
         print('|'.ljust(15, '-') + '=========' + '|'.rjust(15, '-'))
         print('\n'*3)
 
+
+init()
 
 if __name__ == '__main__':
     # Alterar as propriedades dos jogadores como quiser
