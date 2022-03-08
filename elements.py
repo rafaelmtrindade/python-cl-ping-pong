@@ -9,7 +9,7 @@ class Animation:
 
     def animate(self, nav: ConsoleNavigator, frame_top_row: int):
         for frame in self.frames:
-            nav.move_cursor_to(frame_top_row, 1)
+            nav.move_cursor_to(frame_top_row, 0)
             a = nav.NAVIGATOR.get_cursor_pos()
             sleep(1/self.frame_rate)
             print(frame)
@@ -92,20 +92,20 @@ class GameOverOverlay:
         gameover_msg = 'Fim de Jogo!'.center(self.width-2)
         gameover_msg_border = '|' + '='*(self.width - 2) + '|'
 
-        col = self.p1_col if winner == 1 else self.p2_col
-        # TODO: add print functions
+        col = self.p1_col if winner else self.p2_col
 
         # printar indicador de vencedor sobre o jogador
-        self.navigator.move_cursor_to(self.top_row, col-4)
+        self.navigator.move_cursor_to(self.top_row, col-3)
         print(win_indicator[0], end='')
         self.navigator.move_cursor_to(self.top_row+1, col)
         print(win_indicator[1], end='')
 
         # printar mensagem de game over
-        self.navigator.move_cursor_to(self.top_row+3, 0)
+        self.navigator.move_cursor_to(self.top_row+4, 0)
         print(gameover_msg_border)
         self.navigator.move_cursor_by(0, 1)
         print(gameover_msg)
         print(gameover_msg_border)
 
-        self.navigator.move_cursor_by(5)
+        self.navigator.move_cursor_by(2)
+        print()

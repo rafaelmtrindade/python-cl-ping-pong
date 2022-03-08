@@ -69,7 +69,7 @@ class ConsoleNavigator:
         '''
         self.NAVIGATOR.move_cursor_by(row, col)
 
-    def move_cursor_to(self, row: int, col: int):
+    def move_cursor_to(self, row: int, col: int = 0):
         self.NAVIGATOR.move_cursor_to(row, col)
 
 

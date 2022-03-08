@@ -48,7 +48,7 @@ class Game:
             self.overlay = GameOverOverlay(
                 NAVIGATOR,
                 self.anim_frame_top_row+1,
-                10, 31)
+                11, 31)
 
             if randint(0, 1):
                 self.active_player = self.player2
@@ -139,7 +139,7 @@ class Game:
         self.other_player.add_score()
 
     def end_game(self):
-        winner = self.player1 if self.player1.sets > self.player2.sets else self.player2
+        winner = self.player1.sets > self.player2.sets
         self.overlay.print_overlay(winner)
 
     # anims section
